@@ -221,3 +221,11 @@ __marimo__/
 *.db
 data/*.pkl
 .vscode/
+
+# CineSearch local dataset and database
+data/
+database/*.db
+database/*.db-wal
+database/*.db-shm
+# CineSearch temporary backups
+*_backup.*

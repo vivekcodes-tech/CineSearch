@@ -1,14 +1,149 @@
+﻿
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CineSearch</title><link rel="stylesheet" href="style.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CineSearch</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
 <body>
-<header><a class="brand" href="#">🎬 CineSearch</a><span>Discover something worth watching.</span></header>
-<main>
-<section class="hero"><p class="eyebrow">YOUR NEXT MOVIE STARTS HERE</p><h1>Find a movie.<br><em>Find your next favourite.</em></h1>
-<p>Search titles, explore genres and narrow down your results.</p>
-<div class="search"><input id="searchInput" placeholder="Search movies, e.g. Inception..." autocomplete="off"><button id="searchButton">Search</button><ul id="suggestions" hidden></ul></div><p id="apiStatus" class="status">Connecting to backend…</p></section>
-<section><div class="heading"><div><p class="eyebrow">EXPLORE</p><h2>Movie results</h2></div><span id="resultCount">0 movies</span></div>
-<div class="filters"><label>Genre<select id="genreFilter"><option value="">All genres</option><option>Action</option><option>Adventure</option><option>Animation</option><option>Comedy</option><option>Drama</option><option>Sci-Fi</option></select></label>
-<label class="rating">Minimum rating: <b id="ratingValue">Any</b><input id="ratingFilter" type="range" min="0" max="5" step=".5" value="0"></label><button id="clearFilters" class="clear">Clear filters</button></div>
-<div id="results" class="grid"><div class="empty">Enter a movie title to search.</div></div></section>
-</main><footer>CINESEARCH · MOVIE DISCOVERY MADE SIMPLE</footer><script src="script.js"></script></body></html>
+  <header>
+    <a class="brand" href="#">ðŸŽ¬ CineSearch</a>
+    <span>Discover something worth watching.</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">YOUR NEXT MOVIE STARTS HERE</p>
+      <h1>Find a movie.<br><em>Find your next favourite.</em></h1>
+      <p>Search titles, explore genres and narrow down your results.</p>
+
+      <div class="search">
+        <input id="searchInput" placeholder="Search movies, e.g. Inception..." autocomplete="off">
+        <button id="searchButton">Search</button>
+        <ul id="suggestions" hidden></ul>
+      </div>
+
+      <p id="apiStatus" class="status">Connecting to backendâ€¦</p>
+    </section>
+
+    <section>
+      <div class="heading">
+        <div>
+          <p class="eyebrow">EXPLORE</p>
+          <h2>Movie results</h2>
+        </div>
+        <span id="resultCount">0 movies</span>
+      </div>
+
+      <div class="filters">
+        <label>
+          Genre
+          <select id="genreFilter">
+            <option value="">All genres</option>
+            <option>Action</option>
+            <option>Adventure</option>
+            <option>Animation</option>
+            <option>Comedy</option>
+            <option>Drama</option>
+            <option>Sci-Fi</option>
+          </select>
+        </label>
+
+        <label class="rating">
+          Minimum rating: <b id="ratingValue">Any</b>
+          <input id="ratingFilter" type="range" min="0" max="5" step=".5" value="0">
+        </label>
+
+        <button id="clearFilters" class="clear">Clear filters</button>
+      </div>
+
+      <div id="results" class="grid">
+        <div class="empty">Enter a movie title to search.</div>
+      </div>
+    </section>
+
+        <!-- Movie Recommendations -->
+    <section class="recommendations-section">
+      <div class="heading">
+        <div>
+          <p class="eyebrow">TRENDING</p>
+          <h2>Popular Movies</h2>
+        </div>
+      </div>
+      <div id="popularRecommendations" class="grid">
+        <div class="empty">Loading popular movies...</div>
+      </div>
+    </section>
+
+    <section class="recommendations-section">
+      <div class="heading">
+        <div>
+          <p class="eyebrow">PERSONALIZED</p>
+          <h2>Recommended for You</h2>
+        </div>
+      </div>
+      <div id="genreRecommendations" class="grid">
+        <div class="empty">Recommendations will appear here.</div>
+      </div>
+    </section>
+
+    <section class="recommendations-section">
+      <div class="heading">
+        <div>
+          <p class="eyebrow">DISCOVER</p>
+          <h2>More Ways to Discover</h2>
+        </div>
+      </div>
+
+      <h3>Genre Affinity</h3>
+      <div id="genreAffinityRecommendations" class="grid">
+        <div class="empty">Loading recommendations...</div>
+      </div>
+
+      <h3>Similar Users</h3>
+      <div id="cooccurrenceRecommendations" class="grid">
+        <div class="empty">Loading recommendations...</div>
+      </div>
+
+      <h3>Similar Movies (Jaccard)</h3>
+      <div id="jaccardRecommendations" class="grid">
+        <div class="empty">Loading recommendations...</div>
+      </div>
+    </section>
+
+    <!-- Search History -->
+    <section class="history-section">
+      <div class="heading">
+        <div>
+          <p class="eyebrow">YOUR ACTIVITY</p>
+          <h2>Recent searches</h2>
+        </div>
+        <div class="history-actions">
+          <button id="refreshHistory" class="clear">Refresh</button>
+          <button id="clearHistory" class="clear">Clear history</button>
+        </div>
+      </div>
+
+      <p id="historyStatus" class="status">Loading search history...</p>
+      <div id="historyList" class="history-list">
+        <div class="empty">Loading history...</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Movie details popup -->
+  <div id="movieModal" class="modal" hidden>
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close" aria-label="Close">&times;</button>
+      <div id="movieDetails"></div>
+    </div>
+  </div>
+
+  <footer>CINESEARCH Â· MOVIE DISCOVERY MADE SIMPLE</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+# CineSearch – Student 4 Technical Documentation
+
+## 1. Role and Responsibilities
+
+**Role:** Backend Development, API Integration, Recommendation Integration, Frontend Integration, Testing and Team Integration.
+
+Student 4 was responsible for developing and integrating the Flask backend, connecting the SQLite database, exposing search and recommendation functionality through REST APIs, integrating recommendation features into the frontend, and testing the application.
+
+## 2. Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Backend programming |
+| Flask | REST API development |
+| SQLite | Database integration |
+| Scikit-learn | TF-IDF vectorization and cosine similarity |
+| NumPy | Numerical operations |
+| Pytest | Automated testing |
+| HTML, CSS, JavaScript | Frontend integration |
+| Git and GitHub | Version control and collaboration |
+
+## 3. Backend Architecture
+
+The backend follows a modular structure:
+
+- `backend/app.py` – Flask application and route registration.
+- `backend/routes/` – API route definitions.
+- `backend/services/search_service.py` – Search and autocomplete functionality.
+- `backend/services/ranking_service.py` – Ranking and recommendation algorithms.
+- `backend/integrations/` – Integration adapters.
+- `database/` – Database schema, data import, indexing and validation scripts.
+- `tests/` – API and frontend tests.
+
+## 4. Search and Autocomplete Integration
+
+The backend integrates Student 1's search implementation.
+
+Main components:
+
+- Text preprocessing and tokenization.
+- Inverted index for searching movie titles.
+- Trie-based prefix autocomplete.
+- Boolean AND/OR search.
+- Top-K ranking for selecting relevant results.
+
+The search service loads movie information from SQLite and returns structured movie results through Flask APIs.
+
+## 5. Recommendation Algorithms
+
+Five recommendation methods were integrated into the ranking service.
+
+### 5.1 Popular Recommendations
+
+Uses rating count and average rating to calculate a composite popularity score.
+
+### 5.2 Genre-Based Recommendations
+
+Filters movies according to the selected genre and ranks matching movies using their composite scores.
+
+### 5.3 Genre-Affinity Recommendations
+
+Builds a user genre profile from positively rated movies (rating >= 3.5), excludes previously rated movies and ranks recommendations using genre affinity and composite scores.
+
+### 5.4 User Co-occurrence Recommendations
+
+Identifies other users who positively rated movies also rated by the target user. It recommends unseen movies based on positive ratings from those similar users.
+
+### 5.5 Jaccard Similarity Recommendations
+
+Uses Jaccard similarity between the sets of users who positively rated two movies.
+
+The implementation uses candidate intersection counts to avoid repeatedly calculating set intersections.
+
+The optimized implementation returned five recommendations for user 94272 in approximately 4.75 seconds during one test.
+
+## 6. REST API Endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `/api/health` | Backend health check |
+| `/api/search?q=Interstellar` | Search movies |
+| `/api/autocomplete?q=In` | Autocomplete suggestions |
+| `/api/movies/1` | Retrieve movie details |
+| `/api/movies/1/ratings` | Retrieve movie ratings |
+| `/api/search-log` | Save search activity |
+| `/api/users/101/history` | Retrieve user search history |
+| `/api/recommendations/popular?limit=5` | Popular movies |
+| `/api/recommendations/genre/Comedy?limit=5` | Genre recommendations |
+| `/api/recommendations/user/94272/genre-affinity?limit=5` | Personalized genre recommendations |
+| `/api/recommendations/user/94272/cooccurrence?limit=5` | Co-occurrence recommendations |
+| `/api/recommendations/user/94272/jaccard?limit=5` | Jaccard recommendations |
+
+The recommendation APIs return JSON responses containing recommendation counts and movie information.
+
+## 7. Database Integration
+
+The backend connects to the SQLite database:
+
+`database/cinesearch.db`
+
+The database contains movie information, genres, user ratings, tags and precomputed movie statistics.
+
+The ranking service uses the `movie`, `genre`, `movie_genre`, `rating` and `movie_stats` tables.
+
+The MovieLens dataset contains approximately 32 million ratings. The project imported a deterministic sample of approximately one million ratings rather than the complete ratings dataset.
+
+The movie statistics table stores:
+
+- Movie ID
+- Rating count
+- Average rating
+
+## 8. Frontend Integration
+
+The frontend was developed using HTML, CSS and JavaScript.
+
+Integrated features include:
+
+- Movie search and autocomplete.
+- Genre and minimum-rating filters.
+- Movie details popup.
+- Recent search history.
+- Popular movie recommendations.
+- Genre-based recommendations.
+- Genre-affinity recommendations.
+- User co-occurrence recommendations.
+- Jaccard similarity recommendations.
+
+The recommendation sections communicate with the Flask REST APIs and display movie titles, release years, genres, average ratings and rating counts.
+
+The frontend currently uses `USER_ID = 101`. Since this user has no rating history in the imported database, personalized recommendation sections display informative empty-state messages. User 94272 was used for personalized recommendation testing.
+
+## 9. Testing and Validation
+
+Automated tests were executed using Pytest.
+
+**Final combined test result: 39 tests passed, 0 failures.**
+
+| Test category | Passed |
+|---|---:|
+| API tests | 28 |
+| Frontend tests | 11 |
+| Total | 39 |
+
+Additional manual verification included:
+
+- Search and autocomplete API requests.
+- Popular and genre recommendation API requests.
+- Personalized recommendation API requests.
+- Jaccard similarity results.
+- Database connectivity.
+- Ranking model initialization.
+- Frontend recommendation display.
+- Python syntax validation.
+
+## 10. Performance and Optimization
+
+The initial Jaccard implementation was slow because it repeatedly calculated set intersections inside nested loops.
+
+It was optimized using candidate intersection counts and direct union calculations.
+
+The optimized function returned five recommendations in approximately 4.75 seconds for the tested user. This is an observed test result, not a guaranteed response time.
+
+## 11. Conclusion
+
+Student 4 successfully implemented and integrated the Flask backend, SQLite connectivity, search and autocomplete services, five recommendation methods, frontend recommendation integration, and automated API/frontend testing.
+
+The final combined test suite passed all 39 tests.
+
+Remaining activities include final team-wide verification, documentation finalization, and Git submission preparation.
